@@ -8,6 +8,8 @@ thursday = 4
 friday = 5
 saturday = 6
 
+# this next bit from http://code.activestate.com/recipes/252178/
+
 def all_perms(days):
     if len(days) <=1:
         yield days
@@ -19,7 +21,7 @@ def all_perms(days):
 
 days = [monday, tuesday, thursday, friday]
 
-
+# see http://stackoverflow.com/questions/231767/the-python-yield-keyword-explained for figuring out how this works.
 schedule = all_perms(days)
 option = 1
 for i in schedule:
