@@ -8,9 +8,6 @@ thursday = 4
 friday = 5
 saturday = 6
 
-shortestSpan = 15
-longestSpan = 0
-
 def all_perms(days):
     if len(days) <=1:
         yield days
@@ -24,24 +21,23 @@ days = [monday, tuesday, thursday, friday]
 
 
 schedule = all_perms(days)
+option = 1
 for i in schedule:
-    print (i)
+    print "Option " + str(option) + ":"
+    shortestSpan = 15
+    longestSpan = 0
     for j in range(len(i)):
         #print j
         #print i[j]
         dayCode = i[j]
-        print week[dayCode]
+        print "Week " + str(j+1) + ": " + str(week[dayCode])
 
-
-'''
-for j in range(0,4):
-    thisWeek = schedule[j]
-    nextWeek = schedule[(j+1) % 4]
-    timeBetween = nextWeek + 7 - thisWeek
-    print "There are %s days between week %s and week %s" % (timeBetween, j+1, j+2)
-    if timeBetween < shortestSpan:
-        shortestSpan = timeBetween
-
-print "The shortest time between meetings is " + str(shortestSpan) + " days"
-'''
-
+    for j in range(len(i)):
+        thisWeek = i[j]
+        nextWeek = i[(j+1) % 4]
+        timeBetween = nextWeek + 7 - thisWeek
+        print "There are %s days between week %s and week %s meetings" % (timeBetween, j+1, j+2)
+        if timeBetween < shortestSpan:
+            shortestSpan = timeBetween
+    print "The shortest time between meetings is " + str(shortestSpan) + " days"    
+    option = option + 1
