@@ -13,6 +13,8 @@ saturday = 6
 # this next bit from http://code.activestate.com/recipes/252178/
 
 def all_perms(days):
+    """Generate all permutations of a given list of days."""
+    
     if len(days) <=1:
         yield days
     else:
@@ -44,6 +46,8 @@ def analyze_sequence(seq):
     
 
 def main():
+    """Command line execution."""
+    
     days = [monday, tuesday, thursday, friday]
 
     # see http://stackoverflow.com/questions/231767/the-python-yield-keyword-explained for figuring out how this works.
