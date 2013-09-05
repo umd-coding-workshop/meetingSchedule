@@ -24,27 +24,21 @@ def all_perms(days):
                 yield perm[:i] + days[0:1] + perm[i:]
 
 def analyze_sequence(seq):
-    """Analyze a sequence of days in a week and return the shortest span between days."""
+    """Analyze a sequence of days in a week and return a list of spans between days."""
     
-    shortestSpan = 15
-    longestSpan = 0
-    for j in range(len(seq)):
-        #print j
-        #print i[j]
-        dayCode = seq[j]
-        print("Week " + str(j+1) + ": " + str(week[dayCode]))
-
+    spans = []
     for j in range(len(seq)):
         thisWeek = seq[j]
         nextWeek = seq[(j+1) % 4]
         timeBetween = nextWeek + 7 - thisWeek
-        print("There are %s days between week %s and week %s meetings" % (timeBetween, j+1, j+2))
-        if timeBetween < shortestSpan:
-            shortestSpan = timeBetween
+        spans.append(timeBetween)
 
-    return shortestSpan
+    return spans
+
+def get_shortest_span(spans):
+    """Get the shortest span from a list of spans."""
+    return min(spans)
     
-
 def main():
     """Command line execution."""
     
@@ -54,18 +48,28 @@ def main():
     schedule = all_perms(days)
     option = 1
     for i in schedule:
-        print("Option " + str(option) + ":")
-        shortestSpan = analyze_sequence(i)
-        print("The shortest time between meetings is " + str(shortestSpan) + " days")
+        print("\nOption " + str(option) + ":")
+        print("  sequence: " + str([week[n] for n in i]))
+
+        spans = analyze_sequence(i)
+        print("  spans: " + str(spans))
+
+        shortestSpan = get_shortest_span(spans)
+        print("  shortest span: " + str(shortestSpan))
         option = option + 1
     
 class MeetingScheduleTestCase(unittest.TestCase):
     """Unit tests for meetingSchedule."""
     
-    def testAnalyzeSequence(self):
-        self.assertEqual(analyze_sequence([monday,tuesday,thursday,friday]),  3)
-        self.assertEqual(analyze_sequence([tuesday,thursday,monday,friday]),  4)
-        self.assertEqual(analyze_sequence([thursday,tuesday,monday,friday]),  5)
+    def test_analyze_sequence(self):
+        self.assertEqual(analyze_sequence([monday,tuesday,thursday,friday]),  [8,9,8,3])
+        self.assertEqual(analyze_sequence([tuesday,thursday,monday,friday]),  [9,4,11,4])
+        self.assertEqual(analyze_sequence([thursday,tuesday,monday,friday]),  [5,6,11,6])
+
+    def test_get_shortest_span(self):
+        self.assertEqual(get_shortest_span(analyze_sequence([monday,tuesday,thursday,friday])),  3)
+        self.assertEqual(get_shortest_span(analyze_sequence([tuesday,thursday,monday,friday])),  4)
+        self.assertEqual(get_shortest_span(analyze_sequence([thursday,tuesday,monday,friday])),  5)
         
 if __name__ == '__main__':
     test = unittest.main(exit=False)
