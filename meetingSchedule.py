@@ -42,6 +42,12 @@ def get_shortest_span(spans):
 def get_longest_span(spans):
     """Get the longest span from a list of spans."""
     return max(spans)
+
+def get_longest_minimum(candidates):    
+    shortspans = []
+    for i in range(len(candidates)):
+        shortspans.append(candidates[i]['ShortestSpan']) # I feel like I should have been able to do return min(candidates[i]['ShortSpan'])
+    return max(shortspans)
     
 def main():
     """Command line execution."""
@@ -75,8 +81,11 @@ def main():
                       'Sequence' : sequence }
                       
         candidates.append(candidate)
-        option = option + 1
-    print (str(candidates))
+        option = option + 1        
+    
+    longestMinimum = get_longest_minimum(candidates)
+    print("\nLongest minimum of all!: " + str(longestMinimum))  
+    
 class MeetingScheduleTestCase(unittest.TestCase):
     """Unit tests for meetingSchedule."""
         
