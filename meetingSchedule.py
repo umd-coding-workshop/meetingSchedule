@@ -38,29 +38,48 @@ def analyze_sequence(seq):
 def get_shortest_span(spans):
     """Get the shortest span from a list of spans."""
     return min(spans)
+
+def get_longest_span(spans):
+    """Get the longest span from a list of spans."""
+    return max(spans)
     
 def main():
     """Command line execution."""
-    
+    """N.B. day names here are variables standing in for numbers
+    See lines 5-11"""
     days = [monday, tuesday, thursday, friday]
 
     # see http://stackoverflow.com/questions/231767/the-python-yield-keyword-explained for figuring out how this works.
     schedule = all_perms(days)
     option = 1
+    # Start of list of lists to keep track of schedules, shortest spans between meetings
+    # and longest spans between meetings
+    candidates = []
     for i in schedule:
         print("\nOption " + str(option) + ":")
-        print("  sequence: " + str([week[n] for n in i]))
+        sequence = [week[n] for n in i]
+        print("  sequence: " + str(sequence))        
 
         spans = analyze_sequence(i)
         print("  spans: " + str(spans))
 
         shortestSpan = get_shortest_span(spans)
         print("  shortest span: " + str(shortestSpan))
+        
+        longestSpan = get_longest_span(spans)
+        print("  longest span: " + str(longestSpan))
+        
+        candidate = { 'Option' : option,
+                      'Spans' : spans,
+                      'ShortestSpan' : shortestSpan,
+                      'Sequence' : sequence }
+                      
+        candidates.append(candidate)
         option = option + 1
-    
+    print (str(candidates))
 class MeetingScheduleTestCase(unittest.TestCase):
     """Unit tests for meetingSchedule."""
-    
+        
     def test_analyze_sequence(self):
         self.assertEqual(analyze_sequence([monday,tuesday,thursday,friday]),  [8,9,8,3])
         self.assertEqual(analyze_sequence([tuesday,thursday,monday,friday]),  [9,4,11,4])
