@@ -48,6 +48,13 @@ def get_longest_minimum(candidates):
     for i in range(len(candidates)):
         shortspans.append(candidates[i]['ShortestSpan']) # I feel like I should have been able to do return min(candidates[i]['ShortSpan'])
     return max(shortspans)
+
+def get_sequences_with_longest_minimum(candidates, longestMinimum):
+    finalists = []
+    for i in range(len(candidates)):
+        if candidates[i]['ShortestSpan'] == longestMinimum:
+            finalists.append(candidates[i])
+    return finalists
     
 def main():
     """Command line execution."""
@@ -84,7 +91,10 @@ def main():
         option = option + 1        
     
     longestMinimum = get_longest_minimum(candidates)
-    print("\nLongest minimum of all!: " + str(longestMinimum))  
+    print("\nLongest minimum of all!: " + str(longestMinimum)) 
+    
+    finalists = get_sequences_with_longest_minimum(candidates, longestMinimum)
+    print(str(finalists)) 
     
 class MeetingScheduleTestCase(unittest.TestCase):
     """Unit tests for meetingSchedule."""
