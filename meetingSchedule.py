@@ -38,6 +38,31 @@ def analyze_sequence(seq):
 
     return spans
 
+def get_candidates(schedule):
+    option = 1
+    # Start of list of lists to keep track of schedules, shortest spans between meetings
+    # and longest spans between meetings
+    candidates = []
+    for i in schedule:
+        sequence = [week[n] for n in i]
+
+        spans = analyze_sequence(i)
+
+        shortestSpan = get_shortest_span(spans)
+        
+        longestSpan = get_longest_span(spans)
+        
+        candidate = { 'Option' : option,
+                      'Spans' : spans,
+                      'ShortestSpan' : shortestSpan,
+                      'LongestSpan' : longestSpan,
+                      'Sequence' : sequence }
+                      
+        candidates.append(candidate)
+        option = option + 1        
+
+    return candidates
+
 def get_shortest_span(spans):
     """Get the shortest span from a list of spans."""
     return min(spans)
@@ -67,32 +92,16 @@ def main():
 
     # see http://stackoverflow.com/questions/231767/the-python-yield-keyword-explained for figuring out how this works.
     schedule = all_perms(days)
-    option = 1
-    # Start of list of lists to keep track of schedules, shortest spans between meetings
-    # and longest spans between meetings
-    candidates = []
-    for i in schedule:
-        print("\nOption " + str(option) + ":")
-        sequence = [week[n] for n in i]
-        print("  sequence: " + str(sequence))        
 
-        spans = analyze_sequence(i)
-        print("  spans: " + str(spans))
-
-        shortestSpan = get_shortest_span(spans)
-        print("  shortest span: " + str(shortestSpan))
-        
-        longestSpan = get_longest_span(spans)
-        print("  longest span: " + str(longestSpan))
-        
-        candidate = { 'Option' : option,
-                      'Spans' : spans,
-                      'ShortestSpan' : shortestSpan,
-                      'Sequence' : sequence }
-                      
-        candidates.append(candidate)
-        option = option + 1        
+    candidates = get_candidates(schedule)
     
+    for candidate in candidates:
+        print("\nOption " + str(candidate['Option']) + ":")                                                                                                                        
+        print("  sequence: " + str(candidate['Sequence']))                                                                                                                         
+        print("  spans: " + str(candidate['Spans']))                                                                                                                               
+        print("  shortest span: " + str(candidate['ShortestSpan']))                                                                                                                
+        print("  longest span: " + str(candidate['LongestSpan']))                                                                                                                  
+
     longestMinimum = get_longest_minimum(candidates)
     print("\nLongest minimum of all!: " + str(longestMinimum)) 
     
