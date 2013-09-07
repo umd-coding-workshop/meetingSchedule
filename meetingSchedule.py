@@ -13,13 +13,16 @@ saturday = 6
 # this next bit from http://code.activestate.com/recipes/252178/
 
 def all_perms(days):
-    """Generate all permutations of a given list of days."""
+    """Generate all permutations of a given list of days.
+    Remove duplicates based on the circular nature of the list,
+    eg, MTHF = THFM = HFMT = FMTH
+    """
     
     if len(days) <=1:
         yield days
     else:
         for perm in all_perms(days[1:]):
-            for i in range(len(days)):
+            for i in range(len(days)-1):
                 #nb schedule[0:1] works in both string and list contexts
                 yield perm[:i] + days[0:1] + perm[i:]
 
