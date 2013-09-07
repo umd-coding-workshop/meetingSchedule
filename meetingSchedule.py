@@ -10,6 +10,10 @@ thursday = 4
 friday = 5
 saturday = 6
 
+"""N.B. day names here are variables standing in for numbers
+See lines 5-11"""
+days = [monday, tuesday, thursday, friday]
+
 # this next bit from http://code.activestate.com/recipes/252178/
 
 def all_perms(days):
@@ -86,9 +90,6 @@ def get_sequences_with_longest_minimum(candidates, longestMinimum):
     
 def main():
     """Command line execution."""
-    """N.B. day names here are variables standing in for numbers
-    See lines 5-11"""
-    days = [monday, tuesday, thursday, friday]
 
     # see http://stackoverflow.com/questions/231767/the-python-yield-keyword-explained for figuring out how this works.
     schedule = all_perms(days)
@@ -120,6 +121,9 @@ class MeetingScheduleTestCase(unittest.TestCase):
         self.assertEqual(get_shortest_span(analyze_sequence([monday,tuesday,thursday,friday])),  3)
         self.assertEqual(get_shortest_span(analyze_sequence([tuesday,thursday,monday,friday])),  4)
         self.assertEqual(get_shortest_span(analyze_sequence([thursday,tuesday,monday,friday])),  5)
+
+    def get_candidates(self):
+        self.assertEqual(len(get_candidates(all_perms(days))), 6)
         
 if __name__ == '__main__':
     test = unittest.main(exit=False)
