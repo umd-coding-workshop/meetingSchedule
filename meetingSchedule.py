@@ -76,10 +76,7 @@ def get_longest_span(spans):
     return max(spans)
 
 def get_longest_minimum(candidates):    
-    shortspans = []
-    for i in range(len(candidates)):
-        shortspans.append(candidates[i]['ShortestSpan']) # I feel like I should have been able to do return min(candidates[i]['ShortSpan'])
-    return max(shortspans)
+    return max([c['ShortestSpan'] for c in candidates])
 
 def get_sequences_with_longest_minimum(candidates, longestMinimum):
     finalists = []
@@ -122,8 +119,15 @@ class MeetingScheduleTestCase(unittest.TestCase):
         self.assertEqual(get_shortest_span(analyze_sequence([tuesday,thursday,monday,friday])),  4)
         self.assertEqual(get_shortest_span(analyze_sequence([thursday,tuesday,monday,friday])),  5)
 
-    def get_candidates(self):
+    def test_get_candidates(self):
         self.assertEqual(len(get_candidates(all_perms(days))), 6)
+
+    def test_get_sequences_with_longest_minimum(self):
+        candidates = get_candidates(all_perms(days))
+        longestMinimum = get_longest_minimum(candidates)
+        finalists = get_sequences_with_longest_minimum(candidates, longestMinimum)
+        self.assertEqual(len(finalists), 1)
+        self.assertEqual(finalists[0]['Sequence'], ['Thursday', 'Tuesday', 'Monday', 'Friday'])
         
 if __name__ == '__main__':
     test = unittest.main(exit=False)
