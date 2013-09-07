@@ -84,6 +84,15 @@ def get_sequences_with_longest_minimum(candidates, longestMinimum):
         if candidates[i]['ShortestSpan'] == longestMinimum:
             finalists.append(candidates[i])
     return finalists
+
+def print_selections(selections):
+     for selection in selections:
+        print("\nOption " + str(selection['Option']) + ":")
+        print("  sequence: " + str(selection['Sequence']))
+        print("  spans: " + str(selection['Spans']))
+        print("  shortest span: " + str(selection['ShortestSpan']))
+        print("  longest span: " + str(selection['LongestSpan']))
+     return()
     
 def main():
     """Command line execution."""
@@ -93,18 +102,15 @@ def main():
 
     candidates = get_candidates(schedule)
     
-    for candidate in candidates:
-        print("\nOption " + str(candidate['Option']) + ":")
-        print("  sequence: " + str(candidate['Sequence']))
-        print("  spans: " + str(candidate['Spans']))
-        print("  shortest span: " + str(candidate['ShortestSpan']))
-        print("  longest span: " + str(candidate['LongestSpan']))
-
+    print("All the possibilities: ")
+    print_selections(candidates)
+    
     longestMinimum = get_longest_minimum(candidates)
     print("\nLongest minimum of all!: " + str(longestMinimum)) 
     
     finalists = get_sequences_with_longest_minimum(candidates, longestMinimum)
-    print(str(finalists)) 
+    print("Schedule(s) with the longest minimum: " )
+    print_selections(finalists)
     
 class MeetingScheduleTestCase(unittest.TestCase):
     """Unit tests for meetingSchedule."""
