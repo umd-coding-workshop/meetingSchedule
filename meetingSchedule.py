@@ -96,11 +96,11 @@ def main():
     candidates = get_candidates(schedule)
     
     for candidate in candidates:
-        print("\nOption " + str(candidate['Option']) + ":")                                                                                                                        
-        print("  sequence: " + str(candidate['Sequence']))                                                                                                                         
-        print("  spans: " + str(candidate['Spans']))                                                                                                                               
-        print("  shortest span: " + str(candidate['ShortestSpan']))                                                                                                                
-        print("  longest span: " + str(candidate['LongestSpan']))                                                                                                                  
+        print("\nOption " + str(candidate['Option']) + ":")
+        print("  sequence: " + str(candidate['Sequence']))
+        print("  spans: " + str(candidate['Spans']))
+        print("  shortest span: " + str(candidate['ShortestSpan']))
+        print("  longest span: " + str(candidate['LongestSpan']))
 
     longestMinimum = get_longest_minimum(candidates)
     print("\nLongest minimum of all!: " + str(longestMinimum)) 
