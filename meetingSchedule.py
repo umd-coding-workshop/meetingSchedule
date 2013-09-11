@@ -1,4 +1,5 @@
 import unittest
+import argparse
 
 week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
@@ -136,8 +137,20 @@ class MeetingScheduleTestCase(unittest.TestCase):
         self.assertEqual(finalists[0]['Sequence'], ['Thursday', 'Tuesday', 'Monday', 'Friday'])
         
 if __name__ == '__main__':
-    test = unittest.main(exit=False)
-    
-    if (test.result.wasSuccessful()):
+
+    # Parse command-line options
+    parser = argparse.ArgumentParser(description='Determine the optimal rotating schedule for coding workshop meetings.')
+
+    parser.add_argument('-t', '--test', action='store_true',
+                        help='run unit tests instead of schedule analysis')
+
+    args = parser.parse_args()
+
+    if args.test:
+        # Run tests only then exit
+        suite = unittest.TestLoader().loadTestsFromTestCase(MeetingScheduleTestCase)
+        unittest.TextTestRunner(verbosity=2).run(suite)
+    else:
+        # Perform schedule analysis
         main()
 
