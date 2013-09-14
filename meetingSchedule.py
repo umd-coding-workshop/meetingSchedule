@@ -37,7 +37,7 @@ def analyze_sequence(seq):
     spans = []
     for j in range(len(seq)):
         thisWeek = seq[j]
-        nextWeek = seq[(j+1) % 4]
+        nextWeek = seq[(j+1) % len(seq)]
         timeBetween = nextWeek + 7 - thisWeek
         spans.append(timeBetween)
 
@@ -115,27 +115,41 @@ def main():
     
 class MeetingScheduleTestCase(unittest.TestCase):
     """Unit tests for meetingSchedule."""
-        
-    def test_analyze_sequence(self):
-        self.assertEqual(analyze_sequence([monday,tuesday,thursday,friday]),  [8,9,8,3])
-        self.assertEqual(analyze_sequence([tuesday,thursday,monday,friday]),  [9,4,11,4])
-        self.assertEqual(analyze_sequence([thursday,tuesday,monday,friday]),  [5,6,11,6])
 
+    schedule0 = [monday,tuesday,thursday,friday]
+    schedule1 = [tuesday,thursday,monday,friday]
+    schedule2 = [thursday,tuesday,monday,friday]
+    schedule3 = [monday,tuesday,wednesday]
+    schedule4 = [monday, tuesday, thursday, friday, sunday]
+    
+    def test_analyze_sequence(self):
+        self.assertEqual(analyze_sequence(self.schedule0),  [8,9,8,3])
+        self.assertEqual(analyze_sequence(self.schedule1),  [9,4,11,4])
+        self.assertEqual(analyze_sequence(self.schedule2),  [5,6,11,6])
+        self.assertEqual(analyze_sequence(self.schedule3),  [8,8,5])
+        
     def test_get_shortest_span(self):
-        self.assertEqual(get_shortest_span(analyze_sequence([monday,tuesday,thursday,friday])),  3)
-        self.assertEqual(get_shortest_span(analyze_sequence([tuesday,thursday,monday,friday])),  4)
-        self.assertEqual(get_shortest_span(analyze_sequence([thursday,tuesday,monday,friday])),  5)
+        self.assertEqual(get_shortest_span(analyze_sequence(self.schedule0)),  3)
+        self.assertEqual(get_shortest_span(analyze_sequence(self.schedule1)),  4)
+        self.assertEqual(get_shortest_span(analyze_sequence(self.schedule2)),  5)
+        self.assertEqual(get_shortest_span(analyze_sequence(self.schedule3)),  5)
 
     def test_get_candidates(self):
-        self.assertEqual(len(get_candidates(all_perms(days))), 6)
+        self.assertEqual(len(get_candidates(all_perms(self.schedule0))), 6)
+        self.assertEqual(len(get_candidates(all_perms(self.schedule3))), 2)
 
     def test_get_sequences_with_longest_minimum(self):
-        candidates = get_candidates(all_perms(days))
+        candidates = get_candidates(all_perms(self.schedule0))
         longestMinimum = get_longest_minimum(candidates)
         finalists = get_sequences_with_longest_minimum(candidates, longestMinimum)
         self.assertEqual(len(finalists), 1)
         self.assertEqual(finalists[0]['Sequence'], ['Thursday', 'Tuesday', 'Monday', 'Friday'])
-        
+
+        candidates = get_candidates(all_perms(self.schedule4))
+        longestMinimum = get_longest_minimum(candidates)
+        finalists = get_sequences_with_longest_minimum(candidates, longestMinimum)
+        self.assertEqual(len(finalists), 2)
+ 
 if __name__ == '__main__':
 
     # Parse command-line options
@@ -143,9 +157,14 @@ if __name__ == '__main__':
 
     parser.add_argument('-t', '--test', action='store_true',
                         help='run unit tests instead of schedule analysis')
-
+    parser.add_argument('-d', '--days', action='store',
+                        help='alternate days to analyze; specify as a list')
+    
     args = parser.parse_args()
 
+    if args.days:
+        days = eval(args.days)
+        
     if args.test:
         # Run tests only then exit
         suite = unittest.TestLoader().loadTestsFromTestCase(MeetingScheduleTestCase)
