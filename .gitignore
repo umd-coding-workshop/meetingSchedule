@@ -1,2 +1,6 @@
 *.py
 .c9revisions
+.project
+.pydevproject
+__pycache__
+meetingSchedule.pyc
