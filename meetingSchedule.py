@@ -19,9 +19,21 @@ days = [monday, tuesday, thursday, friday]
 # this next bit from http://code.activestate.com/recipes/252178/
 all_options = permutations(['M','T','H','F']) # errant line. I don't THINK it's needed any more
 
+def all_perms(days):
+    """Generate all permutations of a given list of days.
+    Remove duplicates based on the circular nature of the list,
+    eg, MTHF = THFM = HFMT = FMTH
+    """
 
+    # eliminate equivalent schedules by permutating first len(days)-1 values then append last value
+    daysSliced = days[:-1]
+    daysLast = days[-1]
 
+    schedule = []
+    for i in permutations(daysSliced):
+        schedule.append(i + (daysLast,))
 
+    return(schedule)
 
 def analyze_sequence(seq):
     """Analyze a sequence of days in a week and return a list of spans between days."""
@@ -86,19 +98,6 @@ def print_selections(selections):
         print("  shortest span: " + str(selection['ShortestSpan']))
         print("  longest span: " + str(selection['LongestSpan']))
      return()
-
-def all_perms(days):
-    daysSliced = (days[:len(days)-1]) # eliminate equivalent schedules by permutating first len(days)-1 values then append last value
-    daysLast = (days[len(days)-1:])    
-    daysLast = daysLast[0]
-    
-    schedule = []
-    temp = permutations(daysSliced)
-    for i in temp:    
-        i = list(i) # convert to list to allow appending
-        i.append(daysLast)    
-        schedule.append(i)
-    return(schedule)
 
 def main():
     """Command line execution."""
