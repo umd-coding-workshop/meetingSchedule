@@ -19,19 +19,9 @@ days = [monday, tuesday, thursday, friday]
 # this next bit from http://code.activestate.com/recipes/252178/
 all_options = permutations(['M','T','H','F']) # errant line. I don't THINK it's needed any more
 
-def all_perms(days):
-    """Generate all permutations of a given list of days.
-    Remove duplicates based on the circular nature of the list,
-    eg, MTHF = THFM = HFMT = FMTH
-    """
-    
-    if len(days) <=1:
-        yield days
-    else:
-        for perm in all_perms(days[1:]):
-            for i in range(len(days)-1):
-                #nb schedule[0:1] works in both string and list contexts
-                yield perm[:i] + days[0:1] + perm[i:]
+
+
+
 
 def analyze_sequence(seq):
     """Analyze a sequence of days in a week and return a list of spans between days."""
@@ -96,13 +86,27 @@ def print_selections(selections):
         print("  shortest span: " + str(selection['ShortestSpan']))
         print("  longest span: " + str(selection['LongestSpan']))
      return()
+
+def itertoolsPerms(days):
+    daysSliced = (days[:len(days)-1]) # eliminate equivalent schedules by permutating first len(days)-1 values then append last value
+    daysLast = (days[len(days)-1:])    
+    daysLast = daysLast[0]
     
+    schedule = []
+    temp = permutations(daysSliced)
+    for i in temp:    
+        i = list(i) # convert to list to allow appending
+        i.append(daysLast)    
+        schedule.append(i)
+    return(schedule)
+
 def main():
     """Command line execution."""
 
-    # see http://stackoverflow.com/questions/231767/the-python-yield-keyword-explained for figuring out how this works.
-    schedule = permutations(days) # note, Itertools returns results as tuples instead of a list.
-    #schedule = all_perms(days)
+    
+    schedule = itertoolsPerms(days) 
+    
+   
     candidates = get_candidates(schedule)
     
     print("All the possibilities: ")
