@@ -1,5 +1,6 @@
 import unittest
 import argparse
+from itertools import permutations
 
 week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
@@ -16,6 +17,7 @@ See lines 5-11"""
 days = [monday, tuesday, thursday, friday]
 
 # this next bit from http://code.activestate.com/recipes/252178/
+all_options = permutations(['M','T','H','F']) # errant line. I don't THINK it's needed any more
 
 def all_perms(days):
     """Generate all permutations of a given list of days.
@@ -99,8 +101,8 @@ def main():
     """Command line execution."""
 
     # see http://stackoverflow.com/questions/231767/the-python-yield-keyword-explained for figuring out how this works.
-    schedule = all_perms(days)
-
+    schedule = permutations(days) # note, Itertools returns results as tuples instead of a list.
+    #schedule = all_perms(days)
     candidates = get_candidates(schedule)
     
     print("All the possibilities: ")
