@@ -25,13 +25,13 @@ def all_perms(days):
     eg, MTHF = THFM = HFMT = FMTH
     """
 
-    # eliminate equivalent schedules by permutating first len(days)-1 values then append last value
-    daysSliced = days[:-1]
-    daysLast = days[-1]
+    # eliminate equivalent schedules by permutating last len(days)-1 values then prepending first value
+    daysFirst = (days[0],)
+    daysSliced = days[1:]
 
     schedule = []
     for i in permutations(daysSliced):
-        schedule.append(i + (daysLast,))
+        schedule.append(daysFirst + i)
 
     return(schedule)
 
@@ -145,7 +145,7 @@ class MeetingScheduleTestCase(unittest.TestCase):
         longestMinimum = get_longest_minimum(candidates)
         finalists = get_sequences_with_longest_minimum(candidates, longestMinimum)
         self.assertEqual(len(finalists), 1)
-        self.assertEqual(finalists[0]['Sequence'], ['Thursday', 'Tuesday', 'Monday', 'Friday'])
+        self.assertEqual(finalists[0]['Sequence'], ['Monday', 'Friday', 'Thursday', 'Tuesday'])
 
         candidates = get_candidates(all_perms(self.schedule4))
         longestMinimum = get_longest_minimum(candidates)
