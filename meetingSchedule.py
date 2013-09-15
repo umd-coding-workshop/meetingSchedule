@@ -87,7 +87,7 @@ def print_selections(selections):
         print("  longest span: " + str(selection['LongestSpan']))
      return()
 
-def itertoolsPerms(days):
+def all_perms(days):
     daysSliced = (days[:len(days)-1]) # eliminate equivalent schedules by permutating first len(days)-1 values then append last value
     daysLast = (days[len(days)-1:])    
     daysLast = daysLast[0]
@@ -102,13 +102,10 @@ def itertoolsPerms(days):
 
 def main():
     """Command line execution."""
-
     
-    schedule = itertoolsPerms(days) 
-    
-   
+    schedule = all_perms(days)   
     candidates = get_candidates(schedule)
-    
+        
     print("All the possibilities: ")
     print_selections(candidates)
     
